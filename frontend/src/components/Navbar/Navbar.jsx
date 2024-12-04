@@ -17,7 +17,7 @@ const Navbar = () => {
 
           {/* Menu for large screens */}
 
-          <div className="hidden md:flex space-x-4">
+          <div className="hidden md:flex items-center space-x-4">
             <Link to="/" className="hover:text-gray-400">
               Home
             </Link>
@@ -32,6 +32,13 @@ const Navbar = () => {
             </Link>
             <Link to="/contact" className="hover:text-gray-400">
               Contact
+            </Link>
+
+            <Link
+              to="/admin"
+              className="bg-teal-600 text-white py-2 px-4 rounded font-medium"
+            >
+              Admin
             </Link>
           </div>
 
@@ -71,8 +78,8 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden bg-gray-800">
-          <div className="space-y-1 px-2 pb-3 pt-2">
+        <div className="md:hidden flex flex-col items-center bg-gray-800">
+          <div className="space-y-2 px-2 pb-3 pt-2">
             <Link to="/" className="block hover:bg-gray-700 px-3 py-2 rounded">
               Home
             </Link>
@@ -100,6 +107,14 @@ const Navbar = () => {
             >
               Contact
             </Link>
+            <div className="">
+              <Link
+                to="/admin"
+                className="bg-teal-600 text-white py-2 px-4 rounded font-medium "
+              >
+                Admin
+              </Link>
+            </div>
           </div>
         </div>
       )}

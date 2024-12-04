@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   return (
@@ -16,18 +17,18 @@ const HeroSection = () => {
           </p>
           {/* Call-to-Action Buttons */}
           <div className="mt-6 flex justify-center space-x-4">
-            <a
-              href="#blog"
+            <Link
+              to="/blog"
               className="px-6 py-3 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600"
             >
               Explore Blogs
-            </a>
-            <a
-              href="#contact"
+            </Link>
+            <Link
+              to="/contact"
               className="px-6 py-3 bg-gray-700 text-white rounded-lg shadow-md hover:bg-gray-600"
             >
               Contact Us
-            </a>
+            </Link>
           </div>
         </div>
       </div>
