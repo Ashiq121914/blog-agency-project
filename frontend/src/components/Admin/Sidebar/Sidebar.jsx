@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import {
   FaPlus,
   FaCogs,
@@ -34,8 +34,8 @@ const Sidebar = () => {
       >
         {/* Top - Logo */}
         <div className="p-6">
-          <h1 className="text-2xl font-bold text-center mt-[30px]">
-            BlogNest Admin
+          <h1 className="text-2xl font-bold text-center">
+            <Link to="/admin">BlogNest AdminPanel</Link>
           </h1>
         </div>
 
