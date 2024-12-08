@@ -25,11 +25,7 @@ mongoose
 app.use(cookieParser());
 app.use(
   cors({
-    origin: [
-      "https://blog-agency-project-tawny.vercel.app",
-      "http://localhost:5173",
-      CLIENT_URL,
-    ],
+    origin: ["https://blog-agency-project-tawny.vercel.app", CLIENT_URL],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
