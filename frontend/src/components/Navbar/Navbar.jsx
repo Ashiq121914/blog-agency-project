@@ -33,13 +33,6 @@ const Navbar = () => {
             <Link to="/contact" className="hover:text-gray-400">
               Contact
             </Link>
-
-            <Link
-              to="/admin"
-              className="bg-teal-600 text-white py-2 px-4 rounded font-medium"
-            >
-              Admin
-            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -107,14 +100,6 @@ const Navbar = () => {
             >
               Contact
             </Link>
-            <div className="">
-              <Link
-                to="/admin"
-                className="bg-teal-600 text-white py-2 px-4 rounded font-medium "
-              >
-                Admin
-              </Link>
-            </div>
           </div>
         </div>
       )}

@@ -1,76 +1,66 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import Loader from "../Loader";
 
 const BlogSection = () => {
-  // Sample blog data (title, description, and image)
-  const blogs = [
-    {
-      title: "Blog Post 1",
-      description: "This is a short description of Blog Post 1.",
-      image:
-        "https://images.unsplash.com/photo-1706264337427-fbd7405c3483?q=80&w=600&auto=format&fit=crop",
-    },
-    {
-      title: "Blog Post 2",
-      description: "This is a short description of Blog Post 2.",
-      image:
-        "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=600&auto=format&fit=crop",
-    },
-    {
-      title: "Blog Post 3",
-      description: "This is a short description of Blog Post 3.",
-      image:
-        "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=600&auto=format&fit=crop",
-    },
-    {
-      title: "Blog Post 4",
-      description: "This is a short description of Blog Post 4.",
-      image:
-        "https://images.unsplash.com/photo-1706264337427-fbd7405c3483?q=80&w=600&auto=format&fit=crop",
-    },
-    {
-      title: "Blog Post 5",
-      description: "This is a short description of Blog Post 5.",
-      image:
-        "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=600&auto=format&fit=crop",
-    },
-    {
-      title: "Blog Post 6",
-      description: "This is a short description of Blog Post 6.",
-      image:
-        "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=600&auto=format&fit=crop",
-    },
-  ];
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    (async function () {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/v1/blogs`
+        );
+        if (response.data.success) {
+          setBlogs(response.data.data);
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
 
   return (
     <section className="py-16 bg-gray-100">
-      <div className="max-w-7xl mx-auto px-6">
-        <h2 className="text-3xl font-bold text-center mb-8">
+      <div className="container mx-auto text-center max-w-7xl">
+        <h2 className="text-3xl sm:text-4xl font-extrabold mb-8">
           Our Latest Blogs
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {blogs.map((blog, index) => (
-            <div
-              key={index}
-              className="bg-white shadow-lg rounded-lg overflow-hidden"
-            >
-              <img
-                src={blog.image}
-                alt={blog.title}
-                className="w-full h-64 object-cover"
-              />
-              <div className="p-6">
-                <h3 className="text-xl font-semibold mb-3">{blog.title}</h3>
-                <p className="text-gray-600 mb-4">{blog.description}</p>
-                <a
-                  href="#"
-                  className="text-red-500 font-semibold hover:underline"
+
+        {loading ? (
+          <Loader />
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {blogs
+              .map((blog) => (
+                <div
+                  key={blog._id}
+                  className="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
                 >
-                  Read More
-                </a>
-              </div>
-            </div>
-          ))}
-        </div>
+                  <img
+                    src={blog.image.imageURL}
+                    alt={blog.title}
+                    className="w-full h-56 object-cover"
+                  />
+                  <div className="p-6">
+                    <h3 className="text-xl font-semibold mb-3">{blog.title}</h3>
+                    <p className="text-gray-600 text-sm mb-4">
+                      {blog.description}
+                    </p>
+                    <a
+                      href={blog.link}
+                      className="text-blue-600 hover:text-blue-800 font-medium text-sm"
+                    >
+                      Read More
+                    </a>
+                  </div>
+                </div>
+              ))
+              .slice(0, 4)}
+          </div>
+        )}
       </div>
     </section>
   );

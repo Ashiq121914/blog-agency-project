@@ -1,81 +1,78 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { FaTwitter, FaLinkedin, FaGithub } from "react-icons/fa";
+import axios from "axios";
+import Loader from "../Loader";
 
 const TeamSection = () => {
-  const [teamMembers, setTeamMembers] = useState([
-    {
-      name: "John Doe",
-      role: "Lead Developer",
-      bio: "John is passionate about building scalable web applications.",
-      image:
-        "https://plus.unsplash.com/premium_photo-1689977968861-9c91dbb16049?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      name: "Jane Smith",
-      role: "UI/UX Designer",
-      bio: "Jane loves crafting user-friendly designs and beautiful interfaces.",
-      image:
-        "https://plus.unsplash.com/premium_photo-1689977968861-9c91dbb16049?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      name: "Mark Johnson",
-      role: "Backend Engineer",
-      bio: "Mark specializes in creating powerful and efficient server-side applications.",
-      image:
-        "https://plus.unsplash.com/premium_photo-1689977968861-9c91dbb16049?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      name: "Sara Lee",
-      role: "Project Manager",
-      bio: "Sara ensures smooth project delivery and helps coordinate team efforts.",
-      image:
-        "https://plus.unsplash.com/premium_photo-1689977968861-9c91dbb16049?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-  ]);
-
-  //   useEffect(() => {
-  //     // Example: Fetching team members data (this would be dynamic data from your backend or API)
-  //     fetch("/api/team") // Replace with your actual API endpoint
-  //       .then((response) => response.json())
-  //       .then((data) => setTeamMembers(data))
-  //       .catch((error) => console.error("Error fetching team data:", error));
-  //   }, []);
+  const [teamMembers, setTeamMembers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    (async function () {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/v1/members`
+        );
+        if (response.data.success) {
+          setTeamMembers(response.data.data);
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
 
   return (
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-6 sm:px-12 lg:px-24">
-        <h2 className="text-4xl font-semibold text-gray-800 text-center mb-12">
+        <h2 className="text-4xl font-bold text-center text-gray-800 mb-12">
           Meet Our Team
         </h2>
-
-        {/* Team Members Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {teamMembers.length === 0 ? (
-            <div className="col-span-full text-center text-lg text-gray-500">
-              Loading...
-            </div>
-          ) : (
-            teamMembers.map((member, index) => (
+        {loading ? (
+          <Loader />
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
+            {teamMembers.map((member) => (
               <div
-                key={index}
-                className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center"
+                key={member._id}
+                className="bg-white p-6 rounded-lg shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-2xl"
               >
                 <img
-                  src={
-                    member.image ||
-                    "https://images.unsplash.com/photo-1593642634315-2488f3d564da"
-                  } // fallback image from Unsplash
+                  src={member.image.imageURL}
                   alt={member.name}
-                  className="w-32 h-32 object-cover rounded-full mb-4"
+                  className="w-32 h-32 object-cover rounded-full mx-auto mb-6 border-4 border-blue-500"
                 />
-                <h3 className="text-xl font-semibold text-gray-800">
+                <h3 className="text-2xl font-semibold text-gray-800 mb-2 text-center">
                   {member.name}
                 </h3>
-                <p className="text-lg text-gray-500">{member.role}</p>
-                <p className="text-gray-600 mt-2">{member.bio}</p>
+                <p className="text-lg text-gray-600 text-center mb-4">
+                  {member.role}
+                </p>
+                <div className="flex justify-center space-x-6">
+                  <a
+                    href={member.socialMedia.twitter}
+                    className="text-blue-500 hover:text-blue-700 transition"
+                  >
+                    <FaTwitter className="w-6 h-6" />
+                  </a>
+                  <a
+                    href={member.socialMedia.linkedin}
+                    className="text-blue-700 hover:text-blue-900 transition"
+                  >
+                    <FaLinkedin className="w-6 h-6" />
+                  </a>
+                  <a
+                    href={member.socialMedia.github}
+                    className="text-gray-800 hover:text-gray-900 transition"
+                  >
+                    <FaGithub className="w-6 h-6" />
+                  </a>
+                </div>
               </div>
-            ))
-          )}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
